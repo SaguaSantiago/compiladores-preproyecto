@@ -1,5 +1,6 @@
 %{
     #include "preproyecto.h"
+    #include "main.c"
 %}
 
 Letra       [a-zA-Z]
@@ -31,13 +32,3 @@ Num         {Digito}+
 ";"         { printf("%d\n", PUNTO_COMA); }
 .           {}
 %%
-
-int yywrap(void)
-{
-    return 1;
-}
-
-int main(void){
-	yylex();
-	return 0;
-}

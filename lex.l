@@ -1,43 +1,39 @@
 %{
-    #include "preproyecto.h"
+    #include <stdio.h>
+    #include "bisson.tab.h"
+    int yylex(void);
+    extern int yywrap(void);
 %}
 
 Letra       [a-zA-Z]
 Digito      [0-9]
 Id          {Letra}({Letra}|{Digito})*
 Num         {Digito}+
+BoolConst   {true | false}
 
 %%
-"int"       { printf("%d\n", INT); }
-"bool"      { printf("%d\n", BOOL); }
-"void"      { printf("%d\n", VOID); }
-"main"      { printf("%d\n", MAIN); }
-"return"    { printf("%d\n", RETURN); }
+"int"       { return INT; }
+"boolean"      { return BOOLEAN; }
+"void"      { return VOID; }
+"main"      { return MAIN; }
+"return"    { return RETURN; }
 
-"true"      { printf("%d\n", TRUE); }
-"false"     { printf("%d\n", FALSE); }
+"true"      { return TRUE; }
+"false"     { return FALSE; }
 
-{Id}        { printf("%d\n", ID); }
-{Num}       { printf("%d\n", NUM); }
+{Id}        { return IDENTIFICADOR; }
+{Num}       { return NUMERO; }
 
-"+"         { printf("%d\n", SUMA); }
-"*"         { printf("%d\n", MULTIPLICACION); }
-"="         { printf("%d\n", ASIGNACION); }
+"+"         { return SUMA; }
+"*"         { return MULTIPLICACION; }
+"="         { return ASIGNACION; }
 
-"("         { printf("%d\n", PARENTESIS_IZQ); }
-")"         { printf("%d\n", PARENTESIS_DER); }
-"{"         { printf("%d\n", LLAVE_IZQ); }
-"}"         { printf("%d\n", LLAVE_DER); }
-";"         { printf("%d\n", PUNTO_COMA); }
-.           {}
+"("         { return PARENTESIS_IZQ; }
+")"         { return PARENTESIS_DER; }
+"{"         { return LLAVE_IZQ; }
+"}"         { return LLAVE_DER; }
+";"         { return PUNTO_COMA; }
+
+[ \n\t]+     {}
+\nl.           {printf("Token Desconocido: %s\n", yytext);}
 %%
-
-int yywrap(void)
-{
-    return 1;
-}
-
-int main(void){
-	yylex();
-	return 0;
-}

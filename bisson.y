@@ -16,6 +16,7 @@
 
     Ts* tablaSimbolos;
     Nodo* raiz;
+    
 %}
 
 %union {
@@ -39,14 +40,23 @@
 }
 %%
 
-Programa:TipoRetorno MAIN PARENTESIS_IZQ PARENTESIS_DER LLAVE_IZQ Declaraciones Sentencias LLAVE_DER 
-    {   Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
+Programa:
+    TipoRetorno MAIN
+    {
+        Simbolo* simbolo = malloc(sizeof(Simbolo));
         simbolo->nombre = "main";
         simbolo->tipo = $1;
         simbolo->tipoSimbolo = MAIN_SIM;
+
         agregarSimbolo(simbolo, tablaSimbolos);
-        raiz = nuevoNodo(NODO_PROGRAMA, simbolo, $6, $7);}
-    ;
+    }
+    PARENTESIS_IZQ PARENTESIS_DER LLAVE_IZQ
+    Declaraciones Sentencias
+    LLAVE_DER
+    {
+        raiz = nuevoNodo(NODO_PROGRAMA, NULL, $7, $8);
+    }
+;
 
 TipoRetorno:Tipo {$$ = $1;}
             | VOID {$$ = TIPO_VOID;} 
@@ -56,7 +66,7 @@ Tipo:INT {$$ = TIPO_INT;}
     ;
 
 Declaraciones:Decl Declaraciones {$$ = nuevoNodo(NODO_DECLS, NULL, $1, $2);}
-            | 
+            | {$$ = NULL;}
             ;
 
 Decl:Tipo IDENTIFICADOR PUNTO_COMA 
@@ -64,8 +74,8 @@ Decl:Tipo IDENTIFICADOR PUNTO_COMA
         simbolo->nombre = strdup($2);
         simbolo->tipo = $1;
         simbolo->tipoSimbolo = IDENTIFICADOR_SIM;
-        if(!agregarSimbolo(simbolo, tablaSimbolos)){
-            fprintf(stderr, "Error: variable '%s' ya declarada/\n", simbolo->nombre);
+        if(agregarSimbolo(simbolo, tablaSimbolos) == 0){
+            fprintf(stderr, "Error: variable '%s' ya declarada\n", simbolo->nombre);
             exit(1);
         }
 
@@ -75,7 +85,7 @@ Decl:Tipo IDENTIFICADOR PUNTO_COMA
         ;
 
 Sentencias:Sent Sentencias {$$ = nuevoNodo(NODO_SENTENCIAS,NULL, $1, $2);}
-            | 
+            | {$$ = NULL;}
             ;
 
 Sent:Return {$$ = $1;}
@@ -124,7 +134,7 @@ Expresion:Expresion SUMA Expresion {
         Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
         simbolo->tipo = $1->simbolo->tipo;
 
-        if ($1->tipo != $3->tipo) {
+        if ($1->simbolo->tipo != $3->simbolo->tipo) {
             fprintf(stderr, "Error: tipos de datos incompatibles en la suma.\n");
             exit(1);
         }
@@ -141,7 +151,7 @@ Expresion:Expresion SUMA Expresion {
         Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
         simbolo->tipo = $1->simbolo->tipo;
 
-        if ($1->tipo != $3->tipo) {
+        if ($1->simbolo->tipo != $3->simbolo->tipo) {
             fprintf(stderr, "Error: tipos de datos incompatibles en el producto.\n");
             exit(1);
         }

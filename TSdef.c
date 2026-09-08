@@ -17,28 +17,26 @@ Ts* inicializarTs(void){
     return ts;
 }
 
-int agregarSimbolo(Simbolo* simbolo, Ts* tabla){
+int agregarSimbolo(Simbolo* simbolo, Ts* tabla) {
     int actual = tabla->nivelActual;
-    NodoSimbolo* nuevoNodoSimbolo = (NodoSimbolo*) malloc(sizeof(NodoSimbolo));
-    
-    nuevoNodoSimbolo->simbolo = simbolo;
-    
     NodoSimbolo* nodoActual = tabla->niveles[actual].sig;
-    if(nodoActual == NULL){
-        tabla->niveles[actual].sig = nuevoNodoSimbolo;
-        return 1;
-    }
 
-    while(nodoActual->sig != NULL){
-        Simbolo* simboloActual = nodoActual->simbolo;
-        if(strcmp(simboloActual->nombre, simbolo->nombre) == 0){
-            // lanzar una excepcion
+    while (nodoActual != NULL) {
+        if (nodoActual->simbolo != NULL &&
+            nodoActual->simbolo->tipoSimbolo == IDENTIFICADOR_SIM &&
+            simbolo->tipoSimbolo == IDENTIFICADOR_SIM &&
+            strcmp(nodoActual->simbolo->nombre, simbolo->nombre) == 0) {
             return 0;
         }
+
         nodoActual = nodoActual->sig;
     }
-    nodoActual->sig = nuevoNodoSimbolo;
-    
+
+    NodoSimbolo* nuevo = malloc(sizeof(NodoSimbolo));
+    nuevo->simbolo = simbolo;
+    nuevo->sig = tabla->niveles[actual].sig;
+    tabla->niveles[actual].sig = nuevo;
+
     return 1;
 }
 
@@ -46,13 +44,27 @@ Simbolo* buscarSimbolo(char* nombreBuscado, Ts* tabla){
     int nivel = tabla->nivelActual;
     NodoSimbolo* nodoActual = tabla->niveles[nivel].sig;
 
-    while(nodoActual != NULL){
-        char* nombreActual = (nodoActual->simbolo)->nombre;
+    
+    // while(nodoActual != NULL){
+    //     char* nombreActual = (nodoActual->simbolo)->nombre;
 
-        if (strcmp(nombreActual, nombreBuscado)==0) return nodoActual->simbolo;
+    //     if(nodoActual->simbolo == NULL){
+    //         nodoActual = nodoActual->sig;
+    //         continue;
+    //     }
+    //     if (strcmp(nombreActual, nombreBuscado)==0) return nodoActual->simbolo;
+
+    //     nodoActual = nodoActual->sig;
+    // }   
+    while (nodoActual != NULL) {
+        if (nodoActual->simbolo != NULL &&
+            nodoActual->simbolo->nombre != NULL &&
+            strcmp(nodoActual->simbolo->nombre, nombreBuscado) == 0) {
+            return nodoActual->simbolo;
+        }
 
         nodoActual = nodoActual->sig;
-    }   
+    }
 
     free(nodoActual);
     return NULL;

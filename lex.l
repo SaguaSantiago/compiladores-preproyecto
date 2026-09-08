@@ -18,11 +18,23 @@ BoolConst   {true | false}
 "main"      { return MAIN; }
 "return"    { return RETURN; }
 
-"true"      { return TRUE; }
-"false"     { return FALSE; }
+"true"      { 
+    yylval.valor = 1;
+    return TRUE; 
+}
+"false"     { 
+    yylval.valor = 0;
+    return FALSE; 
+}
 
-{Id}        { return IDENTIFICADOR; }
-{Num}       { return NUMERO; }
+{Id} { 
+    yylval.nombre = strdup(yytext);
+    return IDENTIFICADOR; 
+}
+{Num} { 
+    yylval.valor = atoi(yytext);
+    return NUMERO; 
+}
 
 "+"         { return SUMA; }
 "*"         { return MULTIPLICACION; }

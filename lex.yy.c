@@ -784,81 +784,93 @@ YY_RULE_SETUP
 case 6:
 YY_RULE_SETUP
 #line 21 "lex.l"
-{ return TRUE; }
+{ 
+    yylval.valor = 1;
+    return TRUE; 
+}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 22 "lex.l"
-{ return FALSE; }
+#line 25 "lex.l"
+{ 
+    yylval.valor = 0;
+    return FALSE; 
+}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 24 "lex.l"
-{ return IDENTIFICADOR; }
+#line 30 "lex.l"
+{ 
+    yylval.nombre = strdup(yytext);
+    return IDENTIFICADOR; 
+}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 25 "lex.l"
-{ return NUMERO; }
+#line 34 "lex.l"
+{ 
+    yylval.valor = atoi(yytext);
+    return NUMERO; 
+}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 27 "lex.l"
+#line 39 "lex.l"
 { return SUMA; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 28 "lex.l"
+#line 40 "lex.l"
 { return MULTIPLICACION; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 29 "lex.l"
+#line 41 "lex.l"
 { return ASIGNACION; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 31 "lex.l"
+#line 43 "lex.l"
 { return PARENTESIS_IZQ; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 32 "lex.l"
+#line 44 "lex.l"
 { return PARENTESIS_DER; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 33 "lex.l"
+#line 45 "lex.l"
 { return LLAVE_IZQ; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 34 "lex.l"
+#line 46 "lex.l"
 { return LLAVE_DER; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 35 "lex.l"
+#line 47 "lex.l"
 { return PUNTO_COMA; }
 	YY_BREAK
 case 18:
 /* rule 18 can match eol */
 YY_RULE_SETUP
-#line 37 "lex.l"
+#line 49 "lex.l"
 {}
 	YY_BREAK
 case 19:
 /* rule 19 can match eol */
 YY_RULE_SETUP
-#line 38 "lex.l"
+#line 50 "lex.l"
 {printf("Token Desconocido: %s\n", yytext);}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 39 "lex.l"
+#line 51 "lex.l"
 ECHO;
 	YY_BREAK
-#line 862 "lex.yy.c"
+#line 874 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1863,6 +1875,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 39 "lex.l"
+#line 51 "lex.l"
 
 

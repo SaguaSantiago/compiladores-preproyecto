@@ -70,11 +70,19 @@
 #line 1 "bisson.y"
 
     #include <stdio.h>
+    #include <string.h>
+
+    #include "ASTdef.h"
+    #include "ASTdef.c"
+    #include "Tipos.h"
 
     int yylex(void);
     void yyerror(const char *s);
 
-#line 78 "bisson.tab.c"
+    Ts* tablaSimbolos;
+    Nodo* raiz;
+
+#line 86 "bisson.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -97,60 +105,7 @@
 #  endif
 # endif
 
-
-/* Debug traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
-extern int yydebug;
-#endif
-
-/* Token kinds.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-  enum yytokentype
-  {
-    YYEMPTY = -2,
-    YYEOF = 0,                     /* "end of file"  */
-    YYerror = 256,                 /* error  */
-    YYUNDEF = 257,                 /* "invalid token"  */
-    INT = 258,                     /* INT  */
-    BOOLEAN = 259,                 /* BOOLEAN  */
-    VOID = 260,                    /* VOID  */
-    MAIN = 261,                    /* MAIN  */
-    RETURN = 262,                  /* RETURN  */
-    TRUE = 263,                    /* TRUE  */
-    FALSE = 264,                   /* FALSE  */
-    IDENTIFICADOR = 265,           /* IDENTIFICADOR  */
-    NUMERO = 266,                  /* NUMERO  */
-    SUMA = 267,                    /* SUMA  */
-    MULTIPLICACION = 268,          /* MULTIPLICACION  */
-    ASIGNACION = 269,              /* ASIGNACION  */
-    PARENTESIS_IZQ = 270,          /* PARENTESIS_IZQ  */
-    PARENTESIS_DER = 271,          /* PARENTESIS_DER  */
-    LLAVE_IZQ = 272,               /* LLAVE_IZQ  */
-    LLAVE_DER = 273,               /* LLAVE_DER  */
-    PUNTO_COMA = 274               /* PUNTO_COMA  */
-  };
-  typedef enum yytokentype yytoken_kind_t;
-#endif
-
-/* Value type.  */
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define YYSTYPE_IS_DECLARED 1
-#endif
-
-
-extern YYSTYPE yylval;
-
-
-int yyparse (void);
-
-
-
+#include "bisson.tab.h"
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -158,23 +113,23 @@ enum yysymbol_kind_t
   YYSYMBOL_YYEOF = 0,                      /* "end of file"  */
   YYSYMBOL_YYerror = 1,                    /* error  */
   YYSYMBOL_YYUNDEF = 2,                    /* "invalid token"  */
-  YYSYMBOL_INT = 3,                        /* INT  */
-  YYSYMBOL_BOOLEAN = 4,                    /* BOOLEAN  */
-  YYSYMBOL_VOID = 5,                       /* VOID  */
-  YYSYMBOL_MAIN = 6,                       /* MAIN  */
-  YYSYMBOL_RETURN = 7,                     /* RETURN  */
-  YYSYMBOL_TRUE = 8,                       /* TRUE  */
-  YYSYMBOL_FALSE = 9,                      /* FALSE  */
-  YYSYMBOL_IDENTIFICADOR = 10,             /* IDENTIFICADOR  */
-  YYSYMBOL_NUMERO = 11,                    /* NUMERO  */
-  YYSYMBOL_SUMA = 12,                      /* SUMA  */
-  YYSYMBOL_MULTIPLICACION = 13,            /* MULTIPLICACION  */
-  YYSYMBOL_ASIGNACION = 14,                /* ASIGNACION  */
-  YYSYMBOL_PARENTESIS_IZQ = 15,            /* PARENTESIS_IZQ  */
-  YYSYMBOL_PARENTESIS_DER = 16,            /* PARENTESIS_DER  */
-  YYSYMBOL_LLAVE_IZQ = 17,                 /* LLAVE_IZQ  */
-  YYSYMBOL_LLAVE_DER = 18,                 /* LLAVE_DER  */
-  YYSYMBOL_PUNTO_COMA = 19,                /* PUNTO_COMA  */
+  YYSYMBOL_SUMA = 3,                       /* SUMA  */
+  YYSYMBOL_MULTIPLICACION = 4,             /* MULTIPLICACION  */
+  YYSYMBOL_ASIGNACION = 5,                 /* ASIGNACION  */
+  YYSYMBOL_RETURN = 6,                     /* RETURN  */
+  YYSYMBOL_INT = 7,                        /* INT  */
+  YYSYMBOL_BOOLEAN = 8,                    /* BOOLEAN  */
+  YYSYMBOL_VOID = 9,                       /* VOID  */
+  YYSYMBOL_MAIN = 10,                      /* MAIN  */
+  YYSYMBOL_PARENTESIS_IZQ = 11,            /* PARENTESIS_IZQ  */
+  YYSYMBOL_PARENTESIS_DER = 12,            /* PARENTESIS_DER  */
+  YYSYMBOL_LLAVE_IZQ = 13,                 /* LLAVE_IZQ  */
+  YYSYMBOL_LLAVE_DER = 14,                 /* LLAVE_DER  */
+  YYSYMBOL_PUNTO_COMA = 15,                /* PUNTO_COMA  */
+  YYSYMBOL_NUMERO = 16,                    /* NUMERO  */
+  YYSYMBOL_TRUE = 17,                      /* TRUE  */
+  YYSYMBOL_FALSE = 18,                     /* FALSE  */
+  YYSYMBOL_IDENTIFICADOR = 19,             /* IDENTIFICADOR  */
   YYSYMBOL_YYACCEPT = 20,                  /* $accept  */
   YYSYMBOL_Programa = 21,                  /* Programa  */
   YYSYMBOL_TipoRetorno = 22,               /* TipoRetorno  */
@@ -513,16 +468,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  7
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   50
+#define YYLAST   46
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  20
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  11
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  24
+#define YYNRULES  23
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  45
+#define YYNSTATES  43
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   274
@@ -571,11 +526,11 @@ static const yytype_int8 yytranslate[] =
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int8 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,    12,    12,    14,    15,    17,    18,    21,    22,    25,
-      27,    28,    31,    32,    35,    36,    39,    41,    42,    43,
-      44,    45,    46,    47,    48
+       0,    33,    33,    44,    45,    47,    48,    51,    52,    55,
+      70,    71,    74,    75,    78,    91,   100,   116,   133,   150,
+     151,   152,   160,   168
 };
 #endif
 
@@ -591,10 +546,10 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "\"end of file\"", "error", "\"invalid token\"", "INT", "BOOLEAN",
-  "VOID", "MAIN", "RETURN", "TRUE", "FALSE", "IDENTIFICADOR", "NUMERO",
-  "SUMA", "MULTIPLICACION", "ASIGNACION", "PARENTESIS_IZQ",
-  "PARENTESIS_DER", "LLAVE_IZQ", "LLAVE_DER", "PUNTO_COMA", "$accept",
+  "\"end of file\"", "error", "\"invalid token\"", "SUMA",
+  "MULTIPLICACION", "ASIGNACION", "RETURN", "INT", "BOOLEAN", "VOID",
+  "MAIN", "PARENTESIS_IZQ", "PARENTESIS_DER", "LLAVE_IZQ", "LLAVE_DER",
+  "PUNTO_COMA", "NUMERO", "TRUE", "FALSE", "IDENTIFICADOR", "$accept",
   "Programa", "TipoRetorno", "Tipo", "Declaraciones", "Decl", "Sentencias",
   "Sent", "Return", "Asignacion", "Expresion", YY_NULLPTR
 };
@@ -606,7 +561,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-24)
+#define YYPACT_NINF (-22)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -620,11 +575,11 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      16,   -24,   -24,   -24,     4,    23,   -24,   -24,    -5,    21,
-      25,    28,    33,    -1,    28,    26,    -8,    30,    29,    -1,
-     -24,   -24,   -24,   -24,   -24,   -24,   -24,   -24,     7,   -24,
-      11,     7,   -24,   -24,    22,     7,     7,     7,   -24,    14,
-     -24,    27,    27,    27,   -24
+      13,   -22,   -22,   -22,    29,    20,   -22,   -22,    21,    19,
+      24,     4,    22,    -6,     4,    23,     8,    34,    26,    -6,
+     -22,   -22,   -22,   -22,    17,   -22,   -22,   -22,   -22,   -22,
+       1,    17,   -22,   -22,     5,    17,    17,   -22,     3,   -22,
+      -2,    -2,   -22
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -634,16 +589,16 @@ static const yytype_int8 yydefact[] =
 {
        0,     5,     6,     4,     0,     0,     3,     1,     0,     0,
        0,     8,     0,    11,     8,     0,     0,     0,     0,    11,
-      12,    13,     7,     9,    23,    24,    21,    22,     0,    15,
-       0,     0,     2,    10,     0,     0,     0,     0,    14,     0,
-      20,    17,    18,    19,    16
+      12,    13,     7,     9,     0,    15,    21,    22,    23,    20,
+       0,     0,     2,    10,     0,     0,     0,    14,     0,    19,
+      17,    18,    16
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -24,   -24,   -24,    46,    34,   -24,    31,   -24,   -24,   -24,
-     -23
+     -22,   -22,   -22,    42,    30,   -22,    27,   -22,   -22,   -22,
+     -21
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
@@ -658,33 +613,31 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      24,    25,    26,    27,     7,    34,    16,    28,    39,    17,
-       9,    29,    41,    42,    43,    24,    25,    26,    27,     1,
-       2,     3,    28,    35,    36,    37,    35,    36,    37,     8,
-      38,     1,     2,    44,    35,    36,    37,    10,    40,    35,
-      36,    37,    11,    15,    31,    23,     6,    32,    22,     0,
-      33
+      16,    35,    36,    34,    35,    36,    35,    36,    35,    36,
+      38,     1,     2,    17,    40,    41,    37,    39,    42,    24,
+       1,     2,     3,    25,    26,    27,    28,    29,    24,     7,
+       8,    10,     9,    26,    27,    28,    29,    11,    23,    31,
+      32,    15,     6,     0,    22,     0,    33
 };
 
 static const yytype_int8 yycheck[] =
 {
-       8,     9,    10,    11,     0,    28,     7,    15,    31,    10,
-      15,    19,    35,    36,    37,     8,     9,    10,    11,     3,
-       4,     5,    15,    12,    13,    14,    12,    13,    14,     6,
-      19,     3,     4,    19,    12,    13,    14,    16,    16,    12,
-      13,    14,    17,    10,    14,    19,     0,    18,    14,    -1,
-      19
+       6,     3,     4,    24,     3,     4,     3,     4,     3,     4,
+      31,     7,     8,    19,    35,    36,    15,    12,    15,    11,
+       7,     8,     9,    15,    16,    17,    18,    19,    11,     0,
+      10,    12,    11,    16,    17,    18,    19,    13,    15,     5,
+      14,    19,     0,    -1,    14,    -1,    19
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,     4,     5,    21,    22,    23,     0,     6,    15,
-      16,    17,    23,    24,    25,    10,     7,    10,    26,    27,
-      28,    29,    24,    19,     8,     9,    10,    11,    15,    19,
-      30,    14,    18,    26,    30,    12,    13,    14,    19,    30,
-      16,    30,    30,    30,    19
+       0,     7,     8,     9,    21,    22,    23,     0,    10,    11,
+      12,    13,    23,    24,    25,    19,     6,    19,    26,    27,
+      28,    29,    24,    15,    11,    15,    16,    17,    18,    19,
+      30,     5,    14,    26,    30,     3,     4,    15,    30,    12,
+      30,    30,    15
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
@@ -692,7 +645,7 @@ static const yytype_int8 yyr1[] =
 {
        0,    20,    21,    22,    22,    23,    23,    24,    24,    25,
       26,    26,    27,    27,    28,    28,    29,    30,    30,    30,
-      30,    30,    30,    30,    30
+      30,    30,    30,    30
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -700,7 +653,7 @@ static const yytype_int8 yyr2[] =
 {
        0,     2,     8,     1,     1,     1,     1,     2,     0,     3,
        2,     0,     1,     1,     3,     2,     4,     3,     3,     3,
-       3,     1,     1,     1,     1
+       1,     1,     1,     1
 };
 
 
@@ -1163,8 +1116,229 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
+  case 2: /* Programa: TipoRetorno MAIN PARENTESIS_IZQ PARENTESIS_DER LLAVE_IZQ Declaraciones Sentencias LLAVE_DER  */
+#line 34 "bisson.y"
+    {   tablaSimbolos = inicializarTs();
 
-#line 1168 "bisson.tab.c"
+        Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
+        simbolo->nombre = "main";
+        simbolo->tipo = (yyvsp[-7].tipo);
+        simbolo->tipoSimbolo = MAIN_SIM;
+        agregarSimbolo(simbolo, tablaSimbolos);
+        raiz = nuevoNodo(NODO_PROGRAMA, simbolo, (yyvsp[-2].arbolAst), (yyvsp[-1].arbolAst));}
+#line 1130 "bisson.tab.c"
+    break;
+
+  case 3: /* TipoRetorno: Tipo  */
+#line 44 "bisson.y"
+                 {(yyval.tipo) = (yyvsp[0].tipo);}
+#line 1136 "bisson.tab.c"
+    break;
+
+  case 4: /* TipoRetorno: VOID  */
+#line 45 "bisson.y"
+                   {(yyval.tipo) = TIPO_VOID;}
+#line 1142 "bisson.tab.c"
+    break;
+
+  case 5: /* Tipo: INT  */
+#line 47 "bisson.y"
+         {(yyval.tipo) = TIPO_INT;}
+#line 1148 "bisson.tab.c"
+    break;
+
+  case 6: /* Tipo: BOOLEAN  */
+#line 48 "bisson.y"
+             {(yyval.tipo) = TIPO_BOOLEAN;}
+#line 1154 "bisson.tab.c"
+    break;
+
+  case 7: /* Declaraciones: Decl Declaraciones  */
+#line 51 "bisson.y"
+                                 {(yyval.arbolAst) = nuevoNodo(NODO_DECLS, NULL, (yyvsp[-1].arbolAst), (yyvsp[0].arbolAst));}
+#line 1160 "bisson.tab.c"
+    break;
+
+  case 9: /* Decl: Tipo IDENTIFICADOR PUNTO_COMA  */
+#line 56 "bisson.y"
+        {Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
+        strcpy(simbolo->nombre, (yyvsp[-1].nombre));
+        simbolo->tipo = (yyvsp[-2].tipo);
+        simbolo->tipoSimbolo = IDENTIFICADOR_SIM;
+        if(!agregarSimbolo(simbolo, tablaSimbolos)){
+            fprintf(stderr, "Error: variable '%s' ya declarada/\n", simbolo->nombre);
+            exit(1);
+        }
+
+        Nodo* nodo = nuevaHoja(NODO_IDENTIFICADOR, simbolo);
+        (yyval.arbolAst) = nuevoNodo(NODO_DECL, simbolo, nodo, NULL);
+        }
+#line 1177 "bisson.tab.c"
+    break;
+
+  case 10: /* Sentencias: Sent Sentencias  */
+#line 70 "bisson.y"
+                           {(yyval.arbolAst) = nuevoNodo(NODO_SENTENCIAS,NULL, (yyvsp[-1].arbolAst), (yyvsp[0].arbolAst));}
+#line 1183 "bisson.tab.c"
+    break;
+
+  case 12: /* Sent: Return  */
+#line 74 "bisson.y"
+            {(yyval.arbolAst) = (yyvsp[0].arbolAst);}
+#line 1189 "bisson.tab.c"
+    break;
+
+  case 13: /* Sent: Asignacion  */
+#line 75 "bisson.y"
+                {(yyval.arbolAst) = (yyvsp[0].arbolAst);}
+#line 1195 "bisson.tab.c"
+    break;
+
+  case 14: /* Return: RETURN Expresion PUNTO_COMA  */
+#line 78 "bisson.y"
+                                   {
+    Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
+    simbolo->tipo = (yyvsp[-1].arbolAst)->tipo;
+    simbolo->tipoSimbolo = RETURN_SIM;
+    agregarSimbolo(simbolo, tablaSimbolos);
+
+    Simbolo* main = buscarSimbolo("main", tablaSimbolos);
+    if (simbolo->tipo != main->tipo){
+        fprintf(stderr, "Error: tipo de retorno invalido.\n");
+        exit(1);
+    }
+
+    (yyval.arbolAst) = nuevoNodo(NODO_RETORNO, simbolo, (yyvsp[-1].arbolAst), NULL);}
+#line 1213 "bisson.tab.c"
+    break;
+
+  case 15: /* Return: RETURN PUNTO_COMA  */
+#line 91 "bisson.y"
+                       {
+        Simbolo* main = buscarSimbolo("main", tablaSimbolos);
+        if(main->tipo != TIPO_VOID){
+            fprintf(stderr, "Error: tipo de retorno invalido.\n");
+            exit(1);
+        }
+        (yyval.arbolAst) = nuevaHoja(NODO_RETORNO, NULL);}
+#line 1225 "bisson.tab.c"
+    break;
+
+  case 16: /* Asignacion: IDENTIFICADOR ASIGNACION Expresion PUNTO_COMA  */
+#line 101 "bisson.y"
+        {Simbolo* idEncontrado = buscarSimbolo((yyvsp[-3].nombre), tablaSimbolos);
+        if(idEncontrado == NULL) { // TODO poner linea de error
+            fprintf(stderr, "Error: variable '%s' no declarada.\n", (yyvsp[-3].nombre));
+            exit(1);
+        } else if(idEncontrado->tipo != (yyvsp[-1].arbolAst)->simbolo->tipo) {
+            printf(stderr, "Error: tipo de dato incompatible en la asignación a '%s'.\n", (yyvsp[-3].nombre));
+            exit(1);
+        }
+        idEncontrado->valor = (yyvsp[-1].arbolAst)->simbolo->valor;
+
+        Nodo* hojaId = nuevaHoja(NODO_IDENTIFICADOR, idEncontrado);
+
+        (yyval.arbolAst) = nuevoNodo(NODO_ASIGNACION, NULL, hojaId, (yyvsp[-1].arbolAst));}
+#line 1243 "bisson.tab.c"
+    break;
+
+  case 17: /* Expresion: Expresion SUMA Expresion  */
+#line 116 "bisson.y"
+                                   {
+        Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
+        simbolo->tipo = (yyvsp[-2].arbolAst)->tipo;
+
+        if ((yyvsp[-2].arbolAst)->tipo != (yyvsp[0].arbolAst)->tipo) {
+            fprintf(stderr, "Error: tipos de datos incompatibles en la suma.\n");
+            exit(1);
+        }
+        
+        simbolo->tipoSimbolo = SUMA_SIM;
+
+        simbolo->valor = (yyvsp[-2].arbolAst)->simbolo->valor + (yyvsp[0].arbolAst)->simbolo->valor;
+
+        agregarSimbolo(simbolo, tablaSimbolos);
+        
+        (yyval.arbolAst) = nuevoNodo(NODO_SUMA, simbolo, (yyvsp[-2].arbolAst), (yyvsp[0].arbolAst));
+    }
+#line 1265 "bisson.tab.c"
+    break;
+
+  case 18: /* Expresion: Expresion MULTIPLICACION Expresion  */
+#line 133 "bisson.y"
+                                        {
+        Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
+        simbolo->tipo = (yyvsp[-2].arbolAst)->tipo;
+
+        if ((yyvsp[-2].arbolAst)->tipo != (yyvsp[0].arbolAst)->tipo) {
+            fprintf(stderr, "Error: tipos de datos incompatibles en el producto.\n");
+            exit(1);
+        }
+        
+        simbolo->tipoSimbolo = MULTIPLICACION_SIM;
+
+        simbolo->valor = (yyvsp[-2].arbolAst)->simbolo->valor * (yyvsp[0].arbolAst)->simbolo->valor;
+
+        agregarSimbolo(simbolo, tablaSimbolos);
+        
+        (yyval.arbolAst) = nuevoNodo(NODO_MULTIPLICACION, simbolo, (yyvsp[-2].arbolAst), (yyvsp[0].arbolAst));
+        }
+#line 1287 "bisson.tab.c"
+    break;
+
+  case 19: /* Expresion: PARENTESIS_IZQ Expresion PARENTESIS_DER  */
+#line 150 "bisson.y"
+                                             {(yyval.arbolAst) = (yyvsp[-1].arbolAst);}
+#line 1293 "bisson.tab.c"
+    break;
+
+  case 20: /* Expresion: IDENTIFICADOR  */
+#line 151 "bisson.y"
+                   {(yyval.arbolAst) = (yyvsp[0].nombre);}
+#line 1299 "bisson.tab.c"
+    break;
+
+  case 21: /* Expresion: NUMERO  */
+#line 152 "bisson.y"
+            {
+        Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
+        simbolo->tipo = TIPO_INT;
+        simbolo->tipoSimbolo = NUMERO_SIM;
+        simbolo->valor = (yyvsp[0].valor);
+        agregarSimbolo(simbolo, tablaSimbolos);
+        (yyval.arbolAst) = nuevaHoja(NODO_NUMERO, simbolo);
+        }
+#line 1312 "bisson.tab.c"
+    break;
+
+  case 22: /* Expresion: TRUE  */
+#line 160 "bisson.y"
+            {
+        Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
+        simbolo->tipo = TIPO_BOOLEAN;
+        simbolo->tipoSimbolo = BOOLEAN_SIM;
+        simbolo->valor = (yyvsp[0].valor);
+        agregarSimbolo(simbolo, tablaSimbolos);
+
+        (yyval.arbolAst) = nuevaHoja(NODO_TIPO, simbolo);}
+#line 1325 "bisson.tab.c"
+    break;
+
+  case 23: /* Expresion: FALSE  */
+#line 168 "bisson.y"
+            {
+        Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
+        simbolo->tipo = TIPO_BOOLEAN;
+        simbolo->tipoSimbolo = BOOLEAN_SIM;
+        simbolo->valor = (yyvsp[0].valor);
+        agregarSimbolo(simbolo, tablaSimbolos);
+        
+        (yyval.arbolAst) = nuevaHoja(NODO_TIPO, simbolo);}
+#line 1338 "bisson.tab.c"
+    break;
+
+
+#line 1342 "bisson.tab.c"
 
       default: break;
     }
@@ -1357,7 +1531,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 50 "bisson.y"
+#line 177 "bisson.y"
 
 
 void yyerror(const char *s)

@@ -11,13 +11,15 @@ typedef enum {
     MULTIPLICACION_SIM,
     ASIGNACION_SIM,
     RETURN_SIM,
-    MAIN_SIM
+    MAIN_SIM,
+    BOOLEAN_SIM
 } TSimbolo;
 
 typedef struct simbolo {
     TSimbolo tipoSimbolo;
     char* nombre;
     Tipo tipo;
+    int valor;
 } Simbolo;
 
 
@@ -34,7 +36,7 @@ typedef struct ts {
 
 Ts* inicializarTs(void);
 int agregarSimbolo(Simbolo* simbolo, Ts* tabla);
-Simbolo* buscarSimbolo(Simbolo simbolo, Ts* tabla);
+Simbolo* buscarSimbolo(char* nombreBuscado, Ts* tabla);
 void agregarNivel(Ts* tabla);
 void sacarNivel(Ts* tabla);
 

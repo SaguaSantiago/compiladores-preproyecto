@@ -1,5 +1,7 @@
 #ifndef ASTDEF_H
 #define ASTDEF_H
+#include "TSdef.h"
+
 typedef enum TipoNodo{
     NODO_DECL,
     NODO_DECLS,

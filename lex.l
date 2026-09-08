@@ -9,7 +9,6 @@ Letra       [a-zA-Z]
 Digito      [0-9]
 Id          {Letra}({Letra}|{Digito})*
 Num         {Digito}+
-BoolConst   {true | false}
 
 %%
 "int"       { return INT; }

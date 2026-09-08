@@ -54,30 +54,42 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    INT = 258,                     /* INT  */
-    BOOLEAN = 259,                 /* BOOLEAN  */
-    VOID = 260,                    /* VOID  */
-    MAIN = 261,                    /* MAIN  */
-    RETURN = 262,                  /* RETURN  */
-    TRUE = 263,                    /* TRUE  */
-    FALSE = 264,                   /* FALSE  */
-    IDENTIFICADOR = 265,           /* IDENTIFICADOR  */
-    NUMERO = 266,                  /* NUMERO  */
-    SUMA = 267,                    /* SUMA  */
-    MULTIPLICACION = 268,          /* MULTIPLICACION  */
-    ASIGNACION = 269,              /* ASIGNACION  */
-    PARENTESIS_IZQ = 270,          /* PARENTESIS_IZQ  */
-    PARENTESIS_DER = 271,          /* PARENTESIS_DER  */
-    LLAVE_IZQ = 272,               /* LLAVE_IZQ  */
-    LLAVE_DER = 273,               /* LLAVE_DER  */
-    PUNTO_COMA = 274               /* PUNTO_COMA  */
+    SUMA = 258,                    /* SUMA  */
+    MULTIPLICACION = 259,          /* MULTIPLICACION  */
+    ASIGNACION = 260,              /* ASIGNACION  */
+    RETURN = 261,                  /* RETURN  */
+    INT = 262,                     /* INT  */
+    BOOLEAN = 263,                 /* BOOLEAN  */
+    VOID = 264,                    /* VOID  */
+    MAIN = 265,                    /* MAIN  */
+    PARENTESIS_IZQ = 266,          /* PARENTESIS_IZQ  */
+    PARENTESIS_DER = 267,          /* PARENTESIS_DER  */
+    LLAVE_IZQ = 268,               /* LLAVE_IZQ  */
+    LLAVE_DER = 269,               /* LLAVE_DER  */
+    PUNTO_COMA = 270,              /* PUNTO_COMA  */
+    NUMERO = 271,                  /* NUMERO  */
+    TRUE = 272,                    /* TRUE  */
+    FALSE = 273,                   /* FALSE  */
+    IDENTIFICADOR = 274            /* IDENTIFICADOR  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 16 "bisson.y"
+
+    int valor;
+    char* nombre;
+    Nodo* arbolAst;
+    Tipo tipo;
+
+#line 90 "bisson.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

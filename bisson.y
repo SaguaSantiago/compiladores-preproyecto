@@ -55,6 +55,14 @@ Programa:
     LLAVE_DER
     {
         raiz = nuevoNodo(NODO_PROGRAMA, NULL, $7, $8);
+        Simbolo* encontrado = buscarSimboloPorTipo(RETURN_SIM, tablaSimbolos);
+        if(encontrado != NULL && $1 == TIPO_VOID){
+            fprintf(stderr, "Error: return inesperado.\n");
+            exit(1);
+        } else if(encontrado == NULL && $1 != TIPO_VOID){
+            fprintf(stderr, "Error: return no encontrado.\n");
+            exit(1);
+        }
     }
 ;
 

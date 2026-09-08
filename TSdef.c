@@ -44,22 +44,28 @@ Simbolo* buscarSimbolo(char* nombreBuscado, Ts* tabla){
     int nivel = tabla->nivelActual;
     NodoSimbolo* nodoActual = tabla->niveles[nivel].sig;
 
-    
-    // while(nodoActual != NULL){
-    //     char* nombreActual = (nodoActual->simbolo)->nombre;
-
-    //     if(nodoActual->simbolo == NULL){
-    //         nodoActual = nodoActual->sig;
-    //         continue;
-    //     }
-    //     if (strcmp(nombreActual, nombreBuscado)==0) return nodoActual->simbolo;
-
-    //     nodoActual = nodoActual->sig;
-    // }   
     while (nodoActual != NULL) {
         if (nodoActual->simbolo != NULL &&
             nodoActual->simbolo->nombre != NULL &&
             strcmp(nodoActual->simbolo->nombre, nombreBuscado) == 0) {
+            return nodoActual->simbolo;
+        }
+
+        nodoActual = nodoActual->sig;
+    }
+
+    free(nodoActual);
+    return NULL;
+}
+
+Simbolo* buscarSimboloPorTipo(TSimbolo tipoBuscado, Ts* tabla){
+    int nivel = tabla->nivelActual;
+    NodoSimbolo* nodoActual = tabla->niveles[nivel].sig;
+
+    while (nodoActual != NULL) {
+        if (nodoActual->simbolo != NULL &&
+            nodoActual->simbolo->tipoSimbolo != NULL &&
+            nodoActual->simbolo->tipoSimbolo == tipoBuscado) {
             return nodoActual->simbolo;
         }
 

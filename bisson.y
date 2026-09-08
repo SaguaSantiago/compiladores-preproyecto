@@ -77,7 +77,7 @@ Sent:Return {$$ = $1;}
 
 Return:RETURN Expresion PUNTO_COMA {
     Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
-    simbolo->tipo = $2->tipo;
+    simbolo->tipo = $2->simbolo->tipo;
     simbolo->tipoSimbolo = RETURN_SIM;
     agregarSimbolo(simbolo, tablaSimbolos);
 

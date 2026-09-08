@@ -1,10 +1,15 @@
+%code requires {
+    #include "ASTdef.h"
+    #include "Tipos.h"
+}
+
 %{
     #include <stdio.h>
     #include <string.h>
 
     #include "ASTdef.h"
-    #include "ASTdef.c"
     #include "Tipos.h"
+    #include "ASTdef.c"
 
     int yylex(void);
     void yyerror(const char *s);
@@ -29,11 +34,13 @@
 
 %start Programa
 
+%initial-action{
+    tablaSimbolos = inicializarTs();
+}
 %%
-Programa:TipoRetorno MAIN PARENTESIS_IZQ PARENTESIS_DER LLAVE_IZQ Declaraciones Sentencias LLAVE_DER 
-    {   tablaSimbolos = inicializarTs();
 
-        Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
+Programa:TipoRetorno MAIN PARENTESIS_IZQ PARENTESIS_DER LLAVE_IZQ Declaraciones Sentencias LLAVE_DER 
+    {   Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
         simbolo->nombre = "main";
         simbolo->tipo = $1;
         simbolo->tipoSimbolo = MAIN_SIM;
@@ -54,7 +61,7 @@ Declaraciones:Decl Declaraciones {$$ = nuevoNodo(NODO_DECLS, NULL, $1, $2);}
 
 Decl:Tipo IDENTIFICADOR PUNTO_COMA 
         {Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
-        strcpy(simbolo->nombre, $2);
+        simbolo->nombre = strdup($2);
         simbolo->tipo = $1;
         simbolo->tipoSimbolo = IDENTIFICADOR_SIM;
         if(!agregarSimbolo(simbolo, tablaSimbolos)){
@@ -103,7 +110,7 @@ Asignacion:IDENTIFICADOR ASIGNACION Expresion PUNTO_COMA
             fprintf(stderr, "Error: variable '%s' no declarada.\n", $1);
             exit(1);
         } else if(idEncontrado->tipo != $3->simbolo->tipo) {
-            printf(stderr, "Error: tipo de dato incompatible en la asignación a '%s'.\n", $1);
+            fprintf(stderr, "Error: tipo de dato incompatible en la asignación a '%s'.\n", $1);
             exit(1);
         }
         idEncontrado->valor = $3->simbolo->valor;
@@ -115,7 +122,7 @@ Asignacion:IDENTIFICADOR ASIGNACION Expresion PUNTO_COMA
 
 Expresion:Expresion SUMA Expresion {
         Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
-        simbolo->tipo = $1->tipo;
+        simbolo->tipo = $1->simbolo->tipo;
 
         if ($1->tipo != $3->tipo) {
             fprintf(stderr, "Error: tipos de datos incompatibles en la suma.\n");
@@ -132,7 +139,7 @@ Expresion:Expresion SUMA Expresion {
     }
     |Expresion MULTIPLICACION Expresion {
         Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
-        simbolo->tipo = $1->tipo;
+        simbolo->tipo = $1->simbolo->tipo;
 
         if ($1->tipo != $3->tipo) {
             fprintf(stderr, "Error: tipos de datos incompatibles en el producto.\n");
@@ -148,7 +155,10 @@ Expresion:Expresion SUMA Expresion {
         $$ = nuevoNodo(NODO_MULTIPLICACION, simbolo, $1, $3);
         }
     |PARENTESIS_IZQ Expresion PARENTESIS_DER {$$ = $2;}
-    |IDENTIFICADOR {$$ = $1;}
+    |IDENTIFICADOR {
+            Simbolo* sim = buscarSimbolo($1, tablaSimbolos);
+            $$ = nuevaHoja(NODO_IDENTIFICADOR, sim);
+        }
     |NUMERO {
         Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
         simbolo->tipo = TIPO_INT;

@@ -31,16 +31,14 @@ int agregarSimbolo(Simbolo* simbolo, Ts* tabla){
 
     while(nodoActual->sig != NULL){
         Simbolo* simboloActual = nodoActual->simbolo;
-        if(simboloActual->tipoSimbolo == simbolo->tipoSimbolo){
+        if(strcmp(simboloActual->nombre, simbolo->nombre) == 0){
             // lanzar una excepcion
             return 0;
         }
         nodoActual = nodoActual->sig;
-        free(simboloActual);
     }
     nodoActual->sig = nuevoNodoSimbolo;
     
-    free(nuevoNodoSimbolo);
     return 1;
 }
 
@@ -55,7 +53,7 @@ Simbolo* buscarSimbolo(char* nombreBuscado, Ts* tabla){
 
         nodoActual = nodoActual->sig;
     }   
-    
+
     free(nodoActual);
     return NULL;
 }

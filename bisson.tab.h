@@ -44,6 +44,13 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 1 "bisson.y"
+
+    #include "ASTdef.h"
+    #include "Tipos.h"
+
+#line 54 "bisson.tab.h"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -79,14 +86,14 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 16 "bisson.y"
+#line 21 "bisson.y"
 
     int valor;
     char* nombre;
     Nodo* arbolAst;
     Tipo tipo;
 
-#line 90 "bisson.tab.h"
+#line 97 "bisson.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

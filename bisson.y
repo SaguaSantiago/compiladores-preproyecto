@@ -57,7 +57,8 @@ Programa:
     Declaraciones Sentencias
     LLAVE_DER
     {
-        raiz = nuevoNodo(NODO_PROGRAMA, NULL, $7, $8);
+        Simbolo* main = buscarSimbolo("main", tablaSimbolos);
+        raiz = nuevoNodo(NODO_PROGRAMA, main, $7, $8);
         Simbolo* encontrado = buscarSimboloPorTipo(RETURN_SIM, tablaSimbolos);
         if(encontrado != NULL && $1 == TIPO_VOID){
             fprintf(stderr, "Error: return inesperado.\n");
@@ -134,7 +135,7 @@ Asignacion:IDENTIFICADOR ASIGNACION Expresion PUNTO_COMA
             fprintf(stderr, "Error: tipo de dato incompatible en la asignación a '%s'.\n", $1);
             exit(1);
         }
-        idEncontrado->valor = $3->simbolo->valor;
+        idEncontrado->valor = $3->simbolo->valor; // TODO sacar a interprete
 
         Nodo* hojaId = nuevaHoja(NODO_IDENTIFICADOR, idEncontrado);
 
@@ -152,7 +153,7 @@ Expresion:Expresion SUMA Expresion {
         
         simbolo->tipoSimbolo = SUMA_SIM;
 
-        simbolo->valor = $1->simbolo->valor + $3->simbolo->valor;
+        simbolo->valor = $1->simbolo->valor + $3->simbolo->valor; // TODO sacar a interprete
 
         agregarSimbolo(simbolo, tablaSimbolos);
         
@@ -169,7 +170,7 @@ Expresion:Expresion SUMA Expresion {
         
         simbolo->tipoSimbolo = MULTIPLICACION_SIM;
 
-        simbolo->valor = $1->simbolo->valor * $3->simbolo->valor;
+        simbolo->valor = $1->simbolo->valor * $3->simbolo->valor; // TODO sacar a interprete
 
         agregarSimbolo(simbolo, tablaSimbolos);
         
@@ -195,7 +196,7 @@ Expresion:Expresion SUMA Expresion {
         simbolo->valor = $1;
         agregarSimbolo(simbolo, tablaSimbolos);
 
-        $$ = nuevaHoja(NODO_TIPO, simbolo);}
+        $$ = nuevaHoja(NODO_BOOLEAN, simbolo);}
     |FALSE  {
         Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
         simbolo->tipo = TIPO_BOOLEAN;
@@ -203,7 +204,7 @@ Expresion:Expresion SUMA Expresion {
         simbolo->valor = $1;
         agregarSimbolo(simbolo, tablaSimbolos);
         
-        $$ = nuevaHoja(NODO_TIPO, simbolo);}
+        $$ = nuevaHoja(NODO_BOOLEAN, simbolo);}
 ;
 %%
 

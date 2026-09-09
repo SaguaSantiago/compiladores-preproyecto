@@ -533,9 +533,9 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    48,    48,    47,    72,    73,    75,    76,    79,    80,
-      83,    98,    99,   102,   103,   106,   119,   128,   144,   161,
-     178,   179,   183,   191,   199
+       0,    48,    48,    47,    73,    74,    76,    77,    80,    81,
+      84,    99,   100,   103,   104,   107,   120,   129,   145,   162,
+     179,   180,   184,   192,   200
 };
 #endif
 
@@ -1478,7 +1478,8 @@ yyreduce:
   case 3: /* Programa: TipoRetorno MAIN $@1 PARENTESIS_IZQ PARENTESIS_DER LLAVE_IZQ Declaraciones Sentencias LLAVE_DER  */
 #line 59 "bisson.y"
     {
-        raiz = nuevoNodo(NODO_PROGRAMA, NULL, (yyvsp[-2].arbolAst), (yyvsp[-1].arbolAst));
+        Simbolo* main = buscarSimbolo("main", tablaSimbolos);
+        raiz = nuevoNodo(NODO_PROGRAMA, main, (yyvsp[-2].arbolAst), (yyvsp[-1].arbolAst));
         Simbolo* encontrado = buscarSimboloPorTipo(RETURN_SIM, tablaSimbolos);
         if(encontrado != NULL && (yyvsp[-8].tipo) == TIPO_VOID){
             fprintf(stderr, "Error: return inesperado.\n");
@@ -1488,47 +1489,47 @@ yyreduce:
             exit(1);
         }
     }
-#line 1492 "bisson.tab.c"
+#line 1493 "bisson.tab.c"
     break;
 
   case 4: /* TipoRetorno: Tipo  */
-#line 72 "bisson.y"
+#line 73 "bisson.y"
                  {(yyval.tipo) = (yyvsp[0].tipo);}
-#line 1498 "bisson.tab.c"
+#line 1499 "bisson.tab.c"
     break;
 
   case 5: /* TipoRetorno: VOID  */
-#line 73 "bisson.y"
+#line 74 "bisson.y"
                    {(yyval.tipo) = TIPO_VOID;}
-#line 1504 "bisson.tab.c"
+#line 1505 "bisson.tab.c"
     break;
 
   case 6: /* Tipo: INT  */
-#line 75 "bisson.y"
+#line 76 "bisson.y"
          {(yyval.tipo) = TIPO_INT;}
-#line 1510 "bisson.tab.c"
+#line 1511 "bisson.tab.c"
     break;
 
   case 7: /* Tipo: BOOLEAN  */
-#line 76 "bisson.y"
+#line 77 "bisson.y"
              {(yyval.tipo) = TIPO_BOOLEAN;}
-#line 1516 "bisson.tab.c"
+#line 1517 "bisson.tab.c"
     break;
 
   case 8: /* Declaraciones: Decl Declaraciones  */
-#line 79 "bisson.y"
+#line 80 "bisson.y"
                                  {(yyval.arbolAst) = nuevoNodo(NODO_DECLS, NULL, (yyvsp[-1].arbolAst), (yyvsp[0].arbolAst));}
-#line 1522 "bisson.tab.c"
+#line 1523 "bisson.tab.c"
     break;
 
   case 9: /* Declaraciones: %empty  */
-#line 80 "bisson.y"
+#line 81 "bisson.y"
               {(yyval.arbolAst) = NULL;}
-#line 1528 "bisson.tab.c"
+#line 1529 "bisson.tab.c"
     break;
 
   case 10: /* Decl: Tipo IDENTIFICADOR PUNTO_COMA  */
-#line 84 "bisson.y"
+#line 85 "bisson.y"
         {Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
         simbolo->nombre = strdup((yyvsp[-1].nombre));
         simbolo->tipo = (yyvsp[-2].tipo);
@@ -1541,35 +1542,35 @@ yyreduce:
         Nodo* nodo = nuevaHoja(NODO_IDENTIFICADOR, simbolo);
         (yyval.arbolAst) = nuevoNodo(NODO_DECL, simbolo, nodo, NULL);
         }
-#line 1545 "bisson.tab.c"
+#line 1546 "bisson.tab.c"
     break;
 
   case 11: /* Sentencias: Sent Sentencias  */
-#line 98 "bisson.y"
+#line 99 "bisson.y"
                            {(yyval.arbolAst) = nuevoNodo(NODO_SENTENCIAS,NULL, (yyvsp[-1].arbolAst), (yyvsp[0].arbolAst));}
-#line 1551 "bisson.tab.c"
+#line 1552 "bisson.tab.c"
     break;
 
   case 12: /* Sentencias: %empty  */
-#line 99 "bisson.y"
+#line 100 "bisson.y"
               {(yyval.arbolAst) = NULL;}
-#line 1557 "bisson.tab.c"
+#line 1558 "bisson.tab.c"
     break;
 
   case 13: /* Sent: Return  */
-#line 102 "bisson.y"
+#line 103 "bisson.y"
             {(yyval.arbolAst) = (yyvsp[0].arbolAst);}
-#line 1563 "bisson.tab.c"
+#line 1564 "bisson.tab.c"
     break;
 
   case 14: /* Sent: Asignacion  */
-#line 103 "bisson.y"
+#line 104 "bisson.y"
                 {(yyval.arbolAst) = (yyvsp[0].arbolAst);}
-#line 1569 "bisson.tab.c"
+#line 1570 "bisson.tab.c"
     break;
 
   case 15: /* Return: RETURN Expresion PUNTO_COMA  */
-#line 106 "bisson.y"
+#line 107 "bisson.y"
                                    {
     Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
     simbolo->tipo = (yyvsp[-1].arbolAst)->simbolo->tipo;
@@ -1583,11 +1584,11 @@ yyreduce:
     }
 
     (yyval.arbolAst) = nuevoNodo(NODO_RETORNO, simbolo, (yyvsp[-1].arbolAst), NULL);}
-#line 1587 "bisson.tab.c"
+#line 1588 "bisson.tab.c"
     break;
 
   case 16: /* Return: RETURN PUNTO_COMA  */
-#line 119 "bisson.y"
+#line 120 "bisson.y"
                        {
         Simbolo* main = buscarSimbolo("main", tablaSimbolos);
         if(main->tipo != TIPO_VOID){
@@ -1595,11 +1596,11 @@ yyreduce:
             exit(1);
         }
         (yyval.arbolAst) = nuevaHoja(NODO_RETORNO, NULL);}
-#line 1599 "bisson.tab.c"
+#line 1600 "bisson.tab.c"
     break;
 
   case 17: /* Asignacion: IDENTIFICADOR ASIGNACION Expresion PUNTO_COMA  */
-#line 129 "bisson.y"
+#line 130 "bisson.y"
         {Simbolo* idEncontrado = buscarSimbolo((yyvsp[-3].nombre), tablaSimbolos);
         if(idEncontrado == NULL) { // TODO poner linea de error
             fprintf(stderr, "Error: variable '%s' no declarada.\n", (yyvsp[-3].nombre));
@@ -1608,16 +1609,16 @@ yyreduce:
             fprintf(stderr, "Error: tipo de dato incompatible en la asignación a '%s'.\n", (yyvsp[-3].nombre));
             exit(1);
         }
-        idEncontrado->valor = (yyvsp[-1].arbolAst)->simbolo->valor;
+        idEncontrado->valor = (yyvsp[-1].arbolAst)->simbolo->valor; // TODO sacar a interprete
 
         Nodo* hojaId = nuevaHoja(NODO_IDENTIFICADOR, idEncontrado);
 
         (yyval.arbolAst) = nuevoNodo(NODO_ASIGNACION, NULL, hojaId, (yyvsp[-1].arbolAst));}
-#line 1617 "bisson.tab.c"
+#line 1618 "bisson.tab.c"
     break;
 
   case 18: /* Expresion: Expresion SUMA Expresion  */
-#line 144 "bisson.y"
+#line 145 "bisson.y"
                                    {
         Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
         simbolo->tipo = (yyvsp[-2].arbolAst)->simbolo->tipo;
@@ -1629,17 +1630,17 @@ yyreduce:
         
         simbolo->tipoSimbolo = SUMA_SIM;
 
-        simbolo->valor = (yyvsp[-2].arbolAst)->simbolo->valor + (yyvsp[0].arbolAst)->simbolo->valor;
+        simbolo->valor = (yyvsp[-2].arbolAst)->simbolo->valor + (yyvsp[0].arbolAst)->simbolo->valor; // TODO sacar a interprete
 
         agregarSimbolo(simbolo, tablaSimbolos);
         
         (yyval.arbolAst) = nuevoNodo(NODO_SUMA, simbolo, (yyvsp[-2].arbolAst), (yyvsp[0].arbolAst));
     }
-#line 1639 "bisson.tab.c"
+#line 1640 "bisson.tab.c"
     break;
 
   case 19: /* Expresion: Expresion MULTIPLICACION Expresion  */
-#line 161 "bisson.y"
+#line 162 "bisson.y"
                                         {
         Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
         simbolo->tipo = (yyvsp[-2].arbolAst)->simbolo->tipo;
@@ -1651,32 +1652,32 @@ yyreduce:
         
         simbolo->tipoSimbolo = MULTIPLICACION_SIM;
 
-        simbolo->valor = (yyvsp[-2].arbolAst)->simbolo->valor * (yyvsp[0].arbolAst)->simbolo->valor;
+        simbolo->valor = (yyvsp[-2].arbolAst)->simbolo->valor * (yyvsp[0].arbolAst)->simbolo->valor; // TODO sacar a interprete
 
         agregarSimbolo(simbolo, tablaSimbolos);
         
         (yyval.arbolAst) = nuevoNodo(NODO_MULTIPLICACION, simbolo, (yyvsp[-2].arbolAst), (yyvsp[0].arbolAst));
         }
-#line 1661 "bisson.tab.c"
+#line 1662 "bisson.tab.c"
     break;
 
   case 20: /* Expresion: PARENTESIS_IZQ Expresion PARENTESIS_DER  */
-#line 178 "bisson.y"
+#line 179 "bisson.y"
                                              {(yyval.arbolAst) = (yyvsp[-1].arbolAst);}
-#line 1667 "bisson.tab.c"
+#line 1668 "bisson.tab.c"
     break;
 
   case 21: /* Expresion: IDENTIFICADOR  */
-#line 179 "bisson.y"
+#line 180 "bisson.y"
                    {
             Simbolo* sim = buscarSimbolo((yyvsp[0].nombre), tablaSimbolos);
             (yyval.arbolAst) = nuevaHoja(NODO_IDENTIFICADOR, sim);
         }
-#line 1676 "bisson.tab.c"
+#line 1677 "bisson.tab.c"
     break;
 
   case 22: /* Expresion: NUMERO  */
-#line 183 "bisson.y"
+#line 184 "bisson.y"
             {
         Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
         simbolo->tipo = TIPO_INT;
@@ -1685,11 +1686,11 @@ yyreduce:
         agregarSimbolo(simbolo, tablaSimbolos);
         (yyval.arbolAst) = nuevaHoja(NODO_NUMERO, simbolo);
         }
-#line 1689 "bisson.tab.c"
+#line 1690 "bisson.tab.c"
     break;
 
   case 23: /* Expresion: TRUE  */
-#line 191 "bisson.y"
+#line 192 "bisson.y"
             {
         Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
         simbolo->tipo = TIPO_BOOLEAN;
@@ -1697,12 +1698,12 @@ yyreduce:
         simbolo->valor = (yyvsp[0].valor);
         agregarSimbolo(simbolo, tablaSimbolos);
 
-        (yyval.arbolAst) = nuevaHoja(NODO_TIPO, simbolo);}
-#line 1702 "bisson.tab.c"
+        (yyval.arbolAst) = nuevaHoja(NODO_BOOLEAN, simbolo);}
+#line 1703 "bisson.tab.c"
     break;
 
   case 24: /* Expresion: FALSE  */
-#line 199 "bisson.y"
+#line 200 "bisson.y"
             {
         Simbolo* simbolo = (Simbolo*) malloc(sizeof(Simbolo));
         simbolo->tipo = TIPO_BOOLEAN;
@@ -1710,12 +1711,12 @@ yyreduce:
         simbolo->valor = (yyvsp[0].valor);
         agregarSimbolo(simbolo, tablaSimbolos);
         
-        (yyval.arbolAst) = nuevaHoja(NODO_TIPO, simbolo);}
-#line 1715 "bisson.tab.c"
+        (yyval.arbolAst) = nuevaHoja(NODO_BOOLEAN, simbolo);}
+#line 1716 "bisson.tab.c"
     break;
 
 
-#line 1719 "bisson.tab.c"
+#line 1720 "bisson.tab.c"
 
       default: break;
     }
@@ -1944,7 +1945,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 208 "bisson.y"
+#line 209 "bisson.y"
 
 
 void yyerror(const char *s)

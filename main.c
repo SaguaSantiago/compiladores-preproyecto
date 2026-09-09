@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "ASTdef.h"
+#include "interprete.c"
+#include "generadorAssembly.c"
+
 int yyparse(void);
+extern void interprete(Nodo* raiz);
 
 int yywrap(void)
 {
@@ -10,38 +16,12 @@ int yywrap(void)
 //raiz del árbol declarado en bison
 extern Nodo* raiz;
 
-void generadorAssembly(Nodo* nodo){
-	if(nodo == NULL){
-		return;
-	}
-
-	if((nodo->tipo == NODO_PROGRAMA) || (nodo->tipo == NODO_SENTENCIAS)){
-		generadorAssembly(nodo->izq);
-		generadorAssembly(nodo->der);
-	}
-	if((nodo->tipo == NODO_NUMERO)){
-		printf(nodo->simbolo->valor);
-	}
-	if(nodo->tipo == NODO_SUMA){
-		generadorAssembly(nodo->izq);
-		generadorAssembly(nodo->der);
-	}
-	if(nodo->tipo == NODO_MULTIPLICACION){
-		generadorAssembly(nodo->izq);
-		generadorAssembly(nodo->der);
-	}
-	if(nodo->tipo == NODO_ASIGNACION){
-		generadorAssembly(nodo->der);
-		printf(nodo->izq->simbolo->nombre);
-	}
-	if(nodo->tipo == NODO_RETORNO){
-		if(nodo->izq  != NULL){
-			generadorAssembly(nodo->izq);
-		}
-	}
-}
 
 int main(void){
 	yyparse();
+	FILE* f = fopen("./output.txt", "w");
+	generadorAssembly(raiz, f);
+	close(f); 
+	interprete(raiz);
 	return 0;
 }

@@ -13,7 +13,7 @@ typedef enum TipoNodo{
     NODO_IDENTIFICADOR,
     NODO_NUMERO,
     NODO_PROGRAMA, 
-    NODO_TIPO
+    NODO_BOOLEAN
 }TipoNodo;
 
 typedef struct Nodo {

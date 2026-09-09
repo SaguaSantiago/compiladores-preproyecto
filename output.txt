@@ -1,0 +1,14 @@
+main:
+Store_Mem x 0
+Store_Mem y 0
+Load_Const 5 t1
+Store_Mem t1 x
+Load_Const 2 t2
+Store_Mem t2 y
+Load_Mem x t3
+Load_Mem y t4
+Add_Reg t3 t4
+Store_Mem t4 x
+Load_Mem x t5
+Return t5
+HALT

@@ -5,6 +5,8 @@
     extern int yywrap(void);
 %}
 
+%option yylineno
+
 Letra       [a-zA-Z]
 Digito      [0-9]
 Id          {Letra}({Letra}|{Digito})*
@@ -45,6 +47,12 @@ Num         {Digito}+
 "}"         { return LLAVE_DER; }
 ";"         { return PUNTO_COMA; }
 
-[ \n\t]+     {}
-\nl.           {printf("Token Desconocido: %s\n", yytext);}
+[ \t]+     {}
+\n         {}
+.           {
+                fprintf(stderr,
+                        "Error léxico en línea %d: carácter inesperado '%s'\n",
+                        yylineno,
+                        yytext);
+            }
 %%

@@ -19,6 +19,9 @@
     
 %}
 
+%define parse.error detailed
+%locations
+
 %union {
     int valor;
     char* nombre;
@@ -206,5 +209,9 @@ Expresion:Expresion SUMA Expresion {
 
 void yyerror(const char *s)
 {
-    fprintf(stderr, "Error sintáctico: %s\n", s);
+    fprintf(stderr,
+            "Error sintáctico en línea %d, columna %d: %s\n",
+            yylloc.first_line,
+            yylloc.first_column,
+            s);
 }
